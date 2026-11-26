@@ -1,4 +1,4 @@
-REPACT PARTY MANA — Version 1.0.0
+R-UI — Version 1.0.1
 World of Warcraft: Forever | Interface 16001
 
 INSTALLATION
@@ -8,7 +8,7 @@ INSTALLATION
    World of Warcraft\_forever_\Interface\AddOns\
 4. Die Datei RepactPartyMana.toc muss sich direkt im Ordner
    AddOns\RepactPartyMana\ befinden (keine doppelte Verschachtelung).
-5. Spiel starten und Repact Party Mana in der Addon-Liste aktivieren.
+5. Spiel starten und R-UI in der Addon-Liste aktivieren.
 6. Gruppenrahmen im Bearbeitungsmodus auf Raid-/kompakte Gruppenrahmen
    stellen (wie im Screenshot). Einer Gruppe beitreten.
 
@@ -21,8 +21,6 @@ ANZEIGE
 - Ist der native Ressourcenbalken sichtbar und ausreichend hoch,
   wird dessen Platz genutzt. Andernfalls liegt die Anzeige am unteren
   Rand des HP-Balkens. So werden dicht stehende Rahmen nicht überlappt.
-- Im Kampf werden ggf. eingeschränkte Daten nur über die vorgesehenen
-  nativen Anzeigefunktionen weitergegeben; keine Umgehung.
 - Wenn der Client die Prozentanzeige nicht gestattet, erscheint --%.
   Neu erstellte Rahmen werden nach Verlassen des Kampfs eingerichtet.
 
@@ -34,11 +32,3 @@ CHATBEFEHLE
                  30 % des HP-Balkens, mindestens 8)
 /rpm reset       Standardwerte
 /rpm status      Zahl erkannter Rahmen und sichtbarer Anzeigen
-
-TESTSTATUS
-Lua-Syntax und simulierte Gruppenrahmen-, Mana-, Combat- und
-Konfigurationsfälle geprüft. Kein Zugriff auf einen laufenden
-WoW-Forever-Client: tatsächliche Frame-Namen, Darstellung und
-Combat-API-Verhalten müssen im Spiel bestätigt werden.
-Falls keine Anzeige erscheint: /rpm status und ggf. /fstack nutzen,
-um den Namen des betreffenden Party-Frames zu ermitteln.

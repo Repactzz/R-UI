@@ -1,0 +1,7 @@
+## Interface: 16001
+## Title: Repact Party Mana
+## Notes: Clean mana strips on Blizzard compact party frames in WoW Forever.
+## Author: Repact
+## Version: 1.0.0
+## SavedVariables: RepactPartyManaDB
+RepactPartyMana.lua

@@ -1,4 +1,4 @@
-R-UI — Version 1.0.2
+R-UI — Version 1.0.3
 World of Warcraft: Forever | Interface 16001
 
 INSTALLATION
@@ -29,6 +29,7 @@ CHATBEFEHLE
 /rui on          Aktivieren
 /rui off         Deaktivieren
 /rui height 13   Höhe des eigenen Balkens (8–24 UI-Einheiten; begrenzt auf
-                 30 % des HP-Balkens, mindestens 8)
+                 30 % des HP-Balkens, mindestens 8; bei geschützter Höhe
+                 zuletzt bekannte Höhe oder fester Einstellungswert)
 /rui reset       Standardwerte
 /rui status      Zahl erkannter Rahmen und sichtbarer Anzeigen

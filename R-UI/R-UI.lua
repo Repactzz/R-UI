@@ -15,6 +15,13 @@ end
 local function plain(v)
     return not secret(v) and v ~= nil
 end
+-- Geometry can be protected independently of combat lockdown.
+local function publicNumber(v)
+    if not secret(v) and type(v) == "number" then return v end
+end
+local function publicTrue(v)
+    return not secret(v) and v == true
+end
 local function isPartyToken(unit)
     return plain(unit) and type(unit) == "string"
         and unit:match("^party[1-4]$") ~= nil
@@ -31,9 +38,9 @@ local function getUnit(frame)
 end
 local function child(frame, key, suffix)
     local value = frame[key]
-    if value then return value end
+    if not secret(value) and value then return value end
     local name = frame:GetName()
-    return name and _G[name .. suffix] or nil
+    return not secret(name) and type(name) == "string" and _G[name .. suffix] or nil
 end
 local function hideAll()
     for _, bar in pairs(bars) do bar:Hide() end
@@ -75,21 +82,43 @@ local function layout(frame, bar)
     local hp = child(frame, "healthBar", "HealthBar")
     if not hp then return end
     local native = child(frame, "powerBar", "PowerBar")
-    local useNative = native and native:IsShown() and native:GetHeight() >= 8
+    -- Inspect only public geometry, never compare or calculate secret dimensions.
+    -- Retain a previously confirmed slot; otherwise use our own fixed height.
+    local nativeHeight = native and publicNumber(native:GetHeight())
+    local nativeShown = native and native:IsShown()
+    local useNative = false
+    if native and publicTrue(nativeShown) then
+        if nativeHeight then
+            useNative = nativeHeight >= 8
+        elseif bar.anchor == native and bar.mode == "native" then
+            nativeHeight = bar.height
+            useNative = true
+        end
+    end
+    local hpHeight = publicNumber(hp:GetHeight())
+    if hpHeight and hpHeight > 0 then
+        bar.lastHP, bar.lastHPHeight = hp, hpHeight
+    elseif bar.lastHP == hp then
+        hpHeight = bar.lastHPHeight
+    end
     local anchor = useNative and native or hp
     local mode = useNative and "native" or "inset"
-    local height = useNative and native:GetHeight() or math.min(db.height, math.max(8, hp:GetHeight() * 0.30))
+    local height = useNative and nativeHeight or db.height
+    if not useNative and hpHeight and hpHeight > 0 then
+        height = math.min(db.height, math.max(8, hpHeight * 0.30))
+    end
+    local level = publicNumber(frame:GetFrameLevel()) or bar.level
     if bar.anchor == anchor and bar.mode == mode and bar.height == height
-        and bar.level == frame:GetFrameLevel() then return end
+        and bar.level == level then return end
     bar:ClearAllPoints()
     -- With native power bars enabled we occupy their existing slot.
     -- Otherwise use the bottom edge of HP so neighboring frames never overlap.
     bar:SetPoint("BOTTOMLEFT", anchor, "BOTTOMLEFT", 0, 0)
     bar:SetPoint("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", 0, 0)
     bar:SetHeight(height)
-    bar:SetFrameLevel(frame:GetFrameLevel() + 12)
+    if level then bar:SetFrameLevel(level + 12) end
     bar.label:SetFont(STANDARD_TEXT_FONT, math.max(8, math.min(11, height - 3)), "OUTLINE")
-    bar.anchor, bar.mode, bar.height, bar.level = anchor, mode, height, frame:GetFrameLevel()
+    bar.anchor, bar.mode, bar.height, bar.level = anchor, mode, height, level
 end
 local function manaValues(unit)
     local maximum = UnitPowerMax(unit, MANA)
@@ -115,7 +144,7 @@ local function percentValue(unit, current, maximum)
 end
 local function update(frame, bar)
     local unit = getUnit(frame)
-    if not db.enabled or not unit or not frame:IsVisible() or not bar.anchor then
+    if not db.enabled or not unit or not publicTrue(frame:IsVisible()) or not bar.anchor then
         bar:Hide()
         return
     end
@@ -243,7 +272,7 @@ SlashCmdList.RUI = function(input)
         scan(); message("Standardeinstellungen wiederhergestellt.")
     elseif cmd == "status" then
         local total, visible = 0, 0
-        for _, bar in pairs(bars) do total = total + 1; if bar:IsVisible() then visible = visible + 1 end end
+        for _, bar in pairs(bars) do total = total + 1; if publicTrue(bar:IsVisible()) then visible = visible + 1 end end
         message((db.enabled and "Aktiv" or "Inaktiv") .. " | Rahmen erkannt: " .. total .. " | Anzeigen sichtbar: " .. visible)
     else
         message("/rui on | off | height 13 | reset | status")

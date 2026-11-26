@@ -1,4 +1,4 @@
--- Repact Party Mana | WoW Forever 1.60.1
+-- R-UI | WoW Forever 1.60.1
 -- Display only. Never changes secure unit frames, attributes, or click actions.
 local ADDON = ...
 local MANA = Enum and Enum.PowerType and Enum.PowerType.Mana or 0
@@ -202,8 +202,8 @@ eventFrame:RegisterEvent("UNIT_CONNECTION")
 eventFrame:SetScript("OnEvent", function(_, event, arg)
     if event == "ADDON_LOADED" then
         if arg ~= ADDON then return end
-        RepactPartyManaDB = type(RepactPartyManaDB) == "table" and RepactPartyManaDB or {}
-        db = RepactPartyManaDB
+        RUIDB = type(RUIDB) == "table" and RUIDB or {}
+        db = RUIDB
         if type(db.enabled) ~= "boolean" then db.enabled = defaults.enabled end
         db.height = type(db.height) == "number" and math.max(8, math.min(24, db.height)) or defaults.height
         loaded = true
@@ -225,17 +225,17 @@ eventFrame:SetScript("OnUpdate", function(_, dt)
     if InCombatLockdown() then refreshExisting() else scan() end
 end)
 local function message(text)
-    print("|cff479fffRepact Party Mana|r: " .. text)
+    print("|cff479fffR-UI|r: " .. text)
 end
-SLASH_REPACTPARTYMANA1 = "/rpm"
-SlashCmdList.REPACTPARTYMANA = function(input)
+SLASH_RUI1 = "/rui"
+SlashCmdList.RUI = function(input)
     if not db then return end
     local cmd, value = input:lower():match("^%s*(%S*)%s*(.-)%s*$")
     if cmd == "on" then db.enabled = true; scan(); message("Aktiviert.")
     elseif cmd == "off" then db.enabled = false; hideAll(); message("Deaktiviert.")
     elseif cmd == "height" then
         local number = tonumber(value)
-        if not number then message("Beispiel: /rpm height 13"); return end
+        if not number then message("Beispiel: /rui height 13"); return end
         db.height = math.max(8, math.min(24, math.floor(number + 0.5)))
         scan(); message("Balkenhöhe: " .. db.height .. " (bei eigenem Balken).")
     elseif cmd == "reset" then
@@ -246,6 +246,6 @@ SlashCmdList.REPACTPARTYMANA = function(input)
         for _, bar in pairs(bars) do total = total + 1; if bar:IsVisible() then visible = visible + 1 end end
         message((db.enabled and "Aktiv" or "Inaktiv") .. " | Rahmen erkannt: " .. total .. " | Anzeigen sichtbar: " .. visible)
     else
-        message("/rpm on | off | height 13 | reset | status")
+        message("/rui on | off | height 13 | reset | status")
     end
 end

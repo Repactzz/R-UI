@@ -1,13 +1,13 @@
-R-UI — Version 1.0.1
+R-UI — Version 1.0.2
 World of Warcraft: Forever | Interface 16001
 
 INSTALLATION
 1. WoW Forever vollständig beenden.
 2. ZIP entpacken.
-3. Den Ordner RepactPartyMana in folgenden Ordner kopieren:
+3. Den Ordner R-UI in folgenden Ordner kopieren:
    World of Warcraft\_forever_\Interface\AddOns\
-4. Die Datei RepactPartyMana.toc muss sich direkt im Ordner
-   AddOns\RepactPartyMana\ befinden (keine doppelte Verschachtelung).
+4. Die Datei R-UI.toc muss sich direkt im Ordner
+   AddOns\R-UI\ befinden (keine doppelte Verschachtelung).
 5. Spiel starten und R-UI in der Addon-Liste aktivieren.
 6. Gruppenrahmen im Bearbeitungsmodus auf Raid-/kompakte Gruppenrahmen
    stellen (wie im Screenshot). Einer Gruppe beitreten.
@@ -25,10 +25,10 @@ ANZEIGE
   Neu erstellte Rahmen werden nach Verlassen des Kampfs eingerichtet.
 
 CHATBEFEHLE
-/rpm             Hilfe
-/rpm on          Aktivieren
-/rpm off         Deaktivieren
-/rpm height 13   Höhe des eigenen Balkens (8–24 UI-Einheiten; begrenzt auf
+/rui             Hilfe
+/rui on          Aktivieren
+/rui off         Deaktivieren
+/rui height 13   Höhe des eigenen Balkens (8–24 UI-Einheiten; begrenzt auf
                  30 % des HP-Balkens, mindestens 8)
-/rpm reset       Standardwerte
-/rpm status      Zahl erkannter Rahmen und sichtbarer Anzeigen
+/rui reset       Standardwerte
+/rui status      Zahl erkannter Rahmen und sichtbarer Anzeigen
